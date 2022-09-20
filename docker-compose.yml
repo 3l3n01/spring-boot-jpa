@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+
+  postgres:
+    image: postgres:alpine
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    networks:
+      - appnetwork
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    restart: unless-stopped
+
+  redis:
+    image: redis:alpine
+    expose:
+      - 6379
+    networks:
+      - appnetwork
+    restart: unless-stopped
+
+  api:
+    image: apispring:1.0.0
+    build:
+      context: ./weather
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      - appnetwork
+    environment:
+      - TIMEOUT=5000
+      - REDIS_SERVER=redis
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+
+networks:
+  appnetwork:
+    driver: bridge
