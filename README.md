@@ -20,6 +20,12 @@ desarrollador proponga la respuesta)
 * Exponer otro endpoint para poder regresar las úlitmas 10 ciudades y el número de consultas
 que se han realizados
 
+## Descripcion Arquitectura
+
+Para almacenar ek historial de las consultas se utiliza Postgresql, por otro lado
+la cache de las consultas correctas, que pueden ser enviadas en caso de no recuperar la informacion,
+desde openweathermap se basa en redis.
+
 ## Requisitos: Ambiente
 
 El ambiente de ejecucion, depende de los siguientes elementos:
